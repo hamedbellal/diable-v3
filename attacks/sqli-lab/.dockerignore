@@ -1,0 +1,8 @@
+Set-Content -Path .dockerignore -Value '.git
+.gitignore
+README.md
+docker-compose.yml
+.dockerignore
+.vscode/
+*.swp
+*.log'

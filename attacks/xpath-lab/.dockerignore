@@ -1,0 +1,15 @@
+.git
+.gitignore
+README.md
+docs/
+docker-compose.yml
+.dockerignore
+.vscode/
+*.swp
+*.swo
+*~
+.DS_Store
+Thumbs.db
+*.log
+*.tmp
+*.bak

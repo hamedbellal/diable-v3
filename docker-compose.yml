@@ -1,7 +1,7 @@
 version: '3.8'
 
 services:
-  # Frontend WP2 - Interface utilisateur
+  # Frontend WP1 - Interface utilisateur
   frontend:
     build: ./frontend
     container_name: diable-frontend
