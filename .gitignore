@@ -1,2 +1,2 @@
 lab-manager/.env
-lab-manager/sessions.db
+lab-manager/data/sessions.db
