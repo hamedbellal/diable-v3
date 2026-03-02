@@ -112,6 +112,27 @@ services:
       - diable-network
     restart: unless-stopped
 
+  # GraphQL Injection Lab — Thiané DIA
+  graphql-lab:
+    build: ./attacks/graphql-lab
+    container_name: graphql-lab
+    ports:
+      - "8085:3000"
+    labels:
+      - "diable.lab=graphql-injection"
+      - "diable.difficulty=medium-hard"
+      - "diable.tag=GraphQL"
+      - "diable.author=Thiané DIA"
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://localhost:3000/health"]
+      interval: 30s
+      timeout: 3s
+      retries: 3
+      start_period: 5s
+    networks:
+      - diable-network
+    restart: unless-stopped
+
   # XXE Lab (à venir)
   # xxe-lab:
   #   build: ./attacks/xxe-lab
