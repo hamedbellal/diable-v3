@@ -1,4 +1,4 @@
-# Lab DIABLE - SQL Injection basée sur les erreurs (Error-Based)
+# Lab DIABLE - SQL Injection basée sur les erreurs 
 
 **Version:** 1.0  
 **Auteur:** Rachid Mejdoubi  
