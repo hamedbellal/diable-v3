@@ -9,6 +9,7 @@ const LABS = {
         composeDir: 'app-cve-2025-68613',
         exercises: 3,
         compose: true,   // ← docker compose car multi-conteneurs
+        internalPort: 5678
     },
     'app-idor': {
         id: 'app-idor',
@@ -16,6 +17,7 @@ const LABS = {
         portSuffix: 2,
         composeDir: 'app-idor',
         exercises: 4,
+        internalPort: 5000
     },
     'app-mfa-bypass': {
         id: 'app-mfa-bypass',
@@ -64,6 +66,7 @@ const LABS = {
         portSuffix: 8,           // 8[user_id][suffix] → ex: user 5 = port 8051
         composeDir: 'graphql-lab',       // sous-dossier dans LABS_DIR
         exercises: 4,
+        internalPort: 3000
     },
     'heartbleed-lab': {
         id: 'heartbleed-lab',
@@ -79,12 +82,13 @@ const LABS = {
         portSuffix: 10,           // 8[user_id][suffix] → ex: user 5 = port 8051
         composeDir: 'jwt-lab',       // sous-dossier dans LABS_DIR
         exercises: 4,
+        internalPort: 3000
     },
-    'log4shell-dockerlab-main': {
-        id: 'log4shell-dockerlab-main',
+    'log4shell-dockerlab-main-vulnerable': {
+        id: 'log4shell-dockerlab-main-vulnerable',
         title: 'Log4Shell (CVE-2021-44228)',
         portSuffix: 11,
-        composeDir: 'log4shell-dockerlab-main',
+        composeDir: 'log4shell-dockerlab-main-vulnerable',
         exercises: 3,
         compose: true,   // http://IP:8071 un IP, serveur vulnerable
     },
@@ -94,6 +98,7 @@ const LABS = {
         portSuffix: 12,
         composeDir: 'mitm-attack-lab',
         compose: true,
+        internalPort: 3000,
         extraPorts: {
             victim: 1,   // ← port + 1 = victim-server
         }, //http://IP:8071  → interface principale du lab http://IP:8072  → victim-server, // ← port + 1 = victim-server
@@ -104,6 +109,7 @@ const LABS = {
         portSuffix: 13,
         composeDir: 'nosql-injection-lab',
         compose: true,
+        internalPort: 3000
     },
     'path-traversal-lab': {
         id: 'path-traversal-lab',
@@ -111,6 +117,7 @@ const LABS = {
         portSuffix: 14,
         composeDir: 'path-traversal-lab',
         exercises: 3,
+        internalPort: 5000
     },
     'phishing': {
         id: 'phishing',
@@ -128,7 +135,7 @@ const LABS = {
         portSuffix: 16,
         composeDir: 'shellshock',
         internalPort: 80,
-        image: 'diable/shellshock-lab:latest',
+        //image: 'diable/shellshock-lab:latest',
         env: {
             DEBUG_MODE: 'false',
             FLASK_ENV: 'production',
