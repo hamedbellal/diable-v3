@@ -10,6 +10,34 @@ const LABS_DIR = process.env.LABS_DIR || '../labs';
 const NETWORK = process.env.DOCKER_NETWORK || 'lab-network';
 const BASE_HOST = process.env.BASE_HOST || 'localhost';
 
+
+async function waitForPort(port, retries = 15, delayMs = 2000) {
+    const net = require('net');
+
+    for (let i = 0; i < retries; i++) {
+        const available = await new Promise(resolve => {
+            const socket = new net.Socket();
+            socket.setTimeout(1000);
+            socket
+                .on('connect', () => { socket.destroy(); resolve(true); })
+                .on('error', () => { socket.destroy(); resolve(false); })
+                .on('timeout', () => { socket.destroy(); resolve(false); })
+                .connect(port, '127.0.0.1');
+        });
+
+        if (available) {
+            console.log(`[Docker] Port ${port} prêt après ${i + 1} tentative(s)`);
+            return true;
+        }
+
+        console.log(`[Docker] Port ${port} pas encore prêt, attente ${delayMs}ms... (${i + 1}/${retries})`);
+        await new Promise(r => setTimeout(r, delayMs));
+    }
+
+    console.warn(`[Docker] Port ${port} toujours indisponible après ${retries} tentatives`);
+    return false;
+}
+
 // ── Spawn ─────────────────────────────────────────────────────────────
 
 async function spawnLab(userId, labId) {
@@ -25,6 +53,7 @@ async function spawnSingleLab(userId, labId) {
     const lab = LABS[labId];
     const containerName = getContainerName(userId, labId);
     const port = getPort(userId, labId);
+    await waitForPort(port);
     const imageName = lab.image || `sec-lab-${labId}`;
 
     const existing = await findContainer(containerName);
@@ -73,7 +102,6 @@ async function spawnComposeLab(userId, labId, labPath) {
 
     console.log(`[Docker] Compose spawn : ${containerName} → port ${port}`);
 
-    // Construire les variables d'environnement et les URLs dynamiquement
     const env = { ...process.env, USER_ID: String(userId), LAB_PORT: String(port) };
     const urls = { main: buildUrl(port) };
 
@@ -85,9 +113,22 @@ async function spawnComposeLab(userId, labId, labPath) {
     }
 
     execSync(
-        `docker compose -p ${containerName} up -d --build`,
+        // ← retirer --build car images déjà buildées par build_lab.sh
+        `docker compose -p ${containerName} up -d`,
         { cwd: labPath, env }
     );
+
+    // Attendre que le service principal soit prêt
+    await waitForPort(port);
+
+    // Attendre aussi les ports supplémentaires si nécessaire
+    if (lab.extraPorts) {
+        const waitPromises = [];
+        for (const [, offset] of Object.entries(lab.extraPorts)) {
+            waitPromises.push(waitForPort(port + offset));
+        }
+        await Promise.all(waitPromises);
+    }
 
     return { containerName, port, url: buildUrl(port), urls };
 }
