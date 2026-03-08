@@ -34,7 +34,7 @@ diable/
 ## 🎯 Work Packages
 
 ### WP1 - Infrastructure & Orchestration
-**Responsables:** [Noms des étudiants]
+**Responsables:** Lucien
 
 **Contenu:**
 - `backend/` : API REST pour la gestion des labs
@@ -47,7 +47,7 @@ diable/
 ---
 
 ### WP2 - Interface Web
-**Responsables:** [Noms des étudiants]
+**Responsables:** Kans
 
 **Contenu:**
 - `frontend/` : Application React pour les utilisateurs
@@ -60,7 +60,7 @@ diable/
 ---
 
 ### WP3 - Containers & Documentation
-**Responsables:** Kennedy NGOKIA, [Autres étudiants]
+**Responsables:** Kennedy, [Autres étudiants]
 
 **Contenu:**
 - `attacks/` : Labs de cybersécurité conteneurisés
@@ -76,7 +76,7 @@ diable/
 ### 1. SQL Injection Lab (`attacks/sqli-lab/`)
 **Difficulté:** Moyen  
 **Tag:** DB  
-**Auteur:** Kennedy NGOKIA
+**Auteur:** Kennedy 
 
 **Scénarios:**
 - Login Bypass avec commentaires SQL
@@ -88,7 +88,7 @@ diable/
 ### 2. XPath Injection Lab (`attacks/xpath-lab/`)
 **Difficulté:** Moyen  
 **Tag:** XML  
-**Auteur:** Kennedy NGOKIA
+**Auteur:** Kennedy 
 
 **Scénarios:**
 - Login Bypass avec `or`
@@ -136,7 +136,7 @@ diable/
 ### 6. JWT Vulnerabilities Lab (`attacks/jwt-lab/`)
 **Difficulté:** Moyen → Difficile  
 **Tag:** JWT  
-**Auteur:** Thiané DIA  
+**Auteur:** Thiané   
 
 **Scénarios:**
 - alg:none Bypass (CVE-2015-9235)
@@ -419,7 +419,7 @@ Tous les labs partagent le thème DIABLE standardisé :
 - Email: wp2@diable-project.fr (fictif)
 
 **WP3 - Containers:**
-- Kennedy NGOKIA: ngokiakennedy@gmail.com
+- Kennedy : 
 - Email général: wp3@diable-project.fr (fictif)
 
 ---
