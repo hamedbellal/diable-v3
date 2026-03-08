@@ -65,7 +65,7 @@ async function spawnSingleLab(userId, labId) {
         const info = await existing.inspect();
         if (!info.State.Running) await existing.start();
         console.log(`[Docker] Conteneur réutilisé : ${containerName}`);
-        return { containerName, port, url: buildUrl(port) };
+        return { containerName, port, url: buildUrl(port, lab) };
     }
 
     console.log(`[Docker] Création : ${containerName} → port ${port}`);
@@ -96,7 +96,7 @@ async function spawnSingleLab(userId, labId) {
 
     await container.start();
     console.log(`[Docker] Démarré : ${containerName} → port ${port}`);
-    return { containerName, port, url: buildUrl(port) };
+    return { containerName, port, url: buildUrl(port, lab) };
 }
 
 async function spawnComposeLab(userId, labId, labPath) {
@@ -117,12 +117,12 @@ async function spawnComposeLab(userId, labId, labPath) {
         LAB_PORT: String(port),
         VULN_PORT: String(port)
     };
-    const urls = { main: buildUrl(port) };
+    const urls = { main: buildUrl(port, lab) };
 
     if (lab.extraPorts) {
         for (const [name, offset] of Object.entries(lab.extraPorts)) {
             env[`${name.toUpperCase()}_PORT`] = String(port + offset);
-            urls[name] = buildUrl(port + offset);
+            urls[name] = buildUrl(port + offset, lab);
         }
     }
 
@@ -144,7 +144,7 @@ async function spawnComposeLab(userId, labId, labPath) {
         await Promise.all(waitPromises);
     }
 
-    return { containerName, port, url: buildUrl(port), urls };
+    return { containerName, port, url: buildUrl(port, lab), urls };
 }
 
 // ── Destroy ───────────────────────────────────────────────────────────
@@ -201,13 +201,14 @@ async function getLabStatus(userId, labId) {
         running: info.State.Running,
         containerName,
         port: getPort(userId, labId),
-        url: buildUrl(getPort(userId, labId)),
+        url: buildUrl(getPort(userId, labId), lab),
         startedAt: info.State.StartedAt,
     };
 }
 
 async function getComposeLabStatus(userId, labId) {
     const projectName = `${labId}-u${userId}`;
+    const lab = LABS[labId];
 
     try {
         const result = execFileSync(
@@ -238,7 +239,7 @@ async function getComposeLabStatus(userId, labId) {
             running: anyRunning,
             allHealthy: allRunning,
             port: getPort(userId, labId),
-            url: buildUrl(getPort(userId, labId)),
+            url: buildUrl(getPort(userId, labId), lab),
         };
 
     } catch (e) {
@@ -275,8 +276,9 @@ async function findContainer(name) {
     }
 }
 
-function buildUrl(port) {
-    return `http://${BASE_HOST}:${port}`;
+function buildUrl(port, lab) {
+    const protocol = lab?.https ? 'https' : 'http';
+    return `${protocol}://${BASE_HOST}:${port}`;
 }
 
 module.exports = { spawnLab, destroyLab, getLabStatus, cleanupExpired };

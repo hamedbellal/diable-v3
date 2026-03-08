@@ -73,8 +73,8 @@ const LABS = {
         title: 'Heartbleed (CVE-2014-0160)',
         portSuffix: 9,
         composeDir: 'heartbleed-lab',
-        internalPort: 4443,
-        image: 'vulhub/heartbleed:latest',
+        internalPort: 443,   // ← port interne 443 (HTTPS), pas 4443
+        https: true,
     },
     'injection_sql_temporell': {
         id: 'injection_sql_temporell',
