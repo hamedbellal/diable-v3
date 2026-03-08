@@ -25,7 +25,7 @@ def init_db():
 
         CREATE TABLE secrets (
             id    INTEGER PRIMARY KEY AUTOINCREMENT,
-            label TEXT
+            label TEXT,
             value TEXT
         );
     """)
