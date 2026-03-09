@@ -8,7 +8,7 @@ const routes  = require('./routes');
 const { runCleanup } = require('./cleanup');
 
 const app  = express();
-const PORT = process.env.API_PORT || 3000;
+const PORT = process.env.API_PORT || 5000;
 
 // ── Middlewares ───────────────────────────────────────────────────────
 app.use(express.json());
