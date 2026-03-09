@@ -240,6 +240,13 @@ const LABS = {
             FLASK_ENV: 'production',
             SECRET_KEY: 'dev-secret-change-in-prod',
         },
+    },
+    'blind-sqli': {
+        id: 'blind-sqli',
+        title: 'Blind Sqli',
+        portSuffix: 26,
+        composeDir: 'blind-sqli',
+        internalPort: 5000
     }
 };
 
