@@ -28,7 +28,7 @@ L'apprenant clique "Lancer le lab" → le site appelle l'API → l'API démarre 
 Ajouter dans le `.env` du site d'apprentissage :
 
 ```env
-LAB_MANAGER_URL=http://IP_DU_VPS:3000
+LAB_MANAGER_URL=http://IP_DU_VPS:4000
 LAB_MANAGER_SECRET=la_cle_api_partagee   # Fournie par l'admin du VPS
 ```
 

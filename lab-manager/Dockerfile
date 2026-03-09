@@ -12,6 +12,6 @@ COPY src/ ./src/
 
 RUN mkdir -p data
 
-EXPOSE 3000
+EXPOSE 4000
 
 CMD ["node", "src/index.js"]
