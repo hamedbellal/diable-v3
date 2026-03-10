@@ -1,32 +1,36 @@
-# 🔐 CSRF Level 2 — Proper Session-Based Protection
+# 🔐 CSRF — Static Token Weak Protection
 
-A lab demonstrating a correct CSRF protection implementation using a session-bound random token.
+A lab demonstrating a weak CSRF protection mechanism based on a static and predictable token.
 
 ---
 
 ## 📁 Project Structure
 
-    level2/
+    csrf/
     ├── Dockerfile
     ├── README.md
     └── src/
+        ├── attacker.html
+        ├── config.php
+        ├── health.php
         ├── index.php
         ├── login.php
-        ├── transfer.php
-        ├── attacker.html
-        └── config.php
+        ├── reset.php
+        ├── style.css
+        └── transfer.php
 
 ---
 
-## 🐳 Run with Docker (Dockerfile only)
+## 🐳 Run with Docker
 
 Build:
 
-    docker build -t diable-csrf-l2 .
+    cd labs/csrf
+    docker build -t diable-csrf .
 
 Run:
 
-    docker run --rm -d --name diable-csrf-l2 -p 8084:80 diable-csrf-l2
+    docker run --rm -d --name diable-csrf -p 8084:80 diable-csrf
 
 Open:
 
@@ -34,39 +38,42 @@ Open:
 
 Stop:
 
-    docker stop diable-csrf-l2
+    docker stop diable-csrf
 
 ---
 
 ## 🎯 Endpoints
 
-- GET / → Transfer form (protected)
-- POST /transfer.php → Protected action
-- GET /attacker.html → CSRF proof of concept (should fail)
+- GET / → Transfer form
+- GET /login.php → Login page
+- POST /transfer.php → Sensitive action
+- GET /attacker.html → CSRF proof of concept
 - GET /reset.php → Reset session
+- GET /health.php → Health check
 
 ---
 
-## 🛡 Protection Mechanism
+## 🛡 Weak Protection Mechanism
 
-This level implements a proper CSRF defense:
+This lab uses a weak CSRF protection pattern:
 
-- A random token is generated per session
-- The token is stored server-side in the session
-- The token is embedded in the form as a hidden field
-- The server validates the token using constant-time comparison
+- A CSRF token is present in the form
+- The token value is static and predictable
+- The same token can be reused by an attacker
+- The server accepts the forged request if the known token is provided
 
-If the token is missing or invalid, the request is rejected.
+Because the token is not truly unpredictable, the protection can be bypassed.
 
 ---
 
 ## 🧪 Expected Behavior
 
-1. Log in (user / password)
-2. Perform a transfer from the form → works
-3. Open attacker.html in another tab → request is rejected
-4. No balance change
-5. No flag appears
+1. Log in using `user / password`
+2. Open `attacker.html` in another tab
+3. The malicious form is submitted automatically
+4. The forged request is accepted
+5. The balance decreases
+6. The flag appears if the transfer conditions are met
 
 ---
 

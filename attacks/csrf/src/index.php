@@ -1,9 +1,7 @@
 <?php require_once "config.php";
 
 if (isset($_SESSION["logged_in"]) && $_SESSION["logged_in"] === true) {
-  if (empty($_SESSION["csrf_token"])) {
-    $_SESSION["csrf_token"] = bin2hex(random_bytes(32));
-  }
+  $_SESSION["csrf_token"] = STATIC_CSRF_TOKEN;
 }
 
 $csrf = $_SESSION["csrf_token"] ?? "";
@@ -18,7 +16,7 @@ $csrf = $_SESSION["csrf_token"] ?? "";
 <body>
   <div class="card">
     <h1>Lab DIABLE - CSRF</h1>
-    <p>Objectif : montrer un transfert bancaire déclenchable sans consentement via CSRF.</p>
+    <p>Objectif : montrer un transfert bancaire déclenchable via un token CSRF statique et prévisible.</p>
 
     <?php if (!isset($_SESSION["logged_in"])): ?>
       <p><b>Tu n’es pas connecté.</b></p>
@@ -43,8 +41,8 @@ $csrf = $_SESSION["csrf_token"] ?? "";
       </form>
 
       <hr>
-      <p><b>Scénario CSRF :</b> une page externe tente d’envoyer un POST vers <code>transfer.php</code>.
-      Ici, le token est lié à la session, donc l’attaque échoue.</p>
+      <p><b>Scénario CSRF :</b> une page externe peut envoyer un POST vers <code>transfer.php</code>.
+      Ici, le token est statique et prévisible, donc l’attaque peut réussir.</p>
 
       <a class="btn" href="reset.php">Reset</a>
     <?php endif; ?>

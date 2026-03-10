@@ -173,12 +173,12 @@ diable/
 - Traffic Modification
 ---
 ### 9. Shellshock Lab (`attacks/shellshock/`)
-**Difficulté:** Moyen  
-**Tag:** WEB  
+**Difficulté:** Inconnue
+**Tag:** RCE
 **Auteur:** Imane
 ---
 ### 10. API Scanning Lab (`attacks/api_scanning/`)
-**Difficulté:** Moyen  
+**Difficulté:** Facile → Moyen  
 **Tag:** WEB  
 **Auteur:** Imane
 ---
@@ -218,8 +218,8 @@ diable/
 **Auteur:** Thiané
 ---
 ### 17. Heartbleed Lab (`attacks/heartbleed-lab/`)
-**Difficulté:** Moyen  
-**Tag:** API  
+**Difficulté:** Difficile  
+**Tag:** TLS
 **Auteur:** Imane
 ---
 ### 17. Log4Shell Lab (`attacks/log4shell-dockerlab-main/`)
