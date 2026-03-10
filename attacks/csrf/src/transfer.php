@@ -23,9 +23,10 @@ if ($amount <= 0) {
 }
 
 /*
-  Level 2 (protégé) :
-  - token CSRF aléatoire lié à la session
-  - vérifié côté serveur
+  Level 2 (faible) :
+  - token CSRF statique
+  - valeur prévisible
+  - pas réellement lié de façon robuste à l'action
 */
 $token = (string)($_POST["csrf_token"] ?? "");
 $expected = (string)($_SESSION["csrf_token"] ?? "");
