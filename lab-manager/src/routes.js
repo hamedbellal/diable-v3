@@ -14,11 +14,12 @@ const LAB_TTL = parseInt(process.env.LAB_TTL || '2700');  // secondes
 //  → Le site d'apprentissage peut l'utiliser pour afficher le catalogue
 // ─────────────────────────────────────────────────────────────────────
 router.get('/labs', (req, res) => {
-    const list = Object.values(LABS).map(l => ({
-        id: l.id,
+    const list = Object.entries(LABS).map(([key, l]) => ({
+        id: key,
         title: l.title,
         exercises: l.exercises,
     }));
+
     res.json({ labs: list });
 });
 
